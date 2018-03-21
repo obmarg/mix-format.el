@@ -148,7 +148,7 @@ Shamelessly stolen from go-mode (https://github.com/dominikh/go-mode.el)"
   (let ((outbuff (get-buffer-create "*elixir-format-output*"))
         (errbuff (get-buffer-create "*elixir-format-errors*"))
         (tmpfile (make-temp-file "elixir-format" nil ".ex"))
-        (our-elixir-format-arguments (list elixir-format-mix-path "format"))
+        (our-elixir-format-arguments (list "format"))
         (output nil))
 
     (unwind-protect
@@ -168,7 +168,7 @@ Shamelessly stolen from go-mode (https://github.com/dominikh/go-mode.el)"
             (setq our-elixir-format-arguments (append our-elixir-format-arguments elixir-format-arguments)))
           (setq our-elixir-format-arguments (append our-elixir-format-arguments (list tmpfile)))
 
-          (if (zerop (apply #'call-process elixir-format-elixir-path nil errbuff nil our-elixir-format-arguments))
+          (if (zerop (apply #'call-process elixir-format-mix-path nil errbuff nil our-elixir-format-arguments))
               (progn
                 (if (zerop (call-process-region (point-min) (point-max) "diff" nil outbuff nil "-n" "-" tmpfile))
                     (message "File is already formatted")
